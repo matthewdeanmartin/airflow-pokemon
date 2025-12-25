@@ -1,0 +1,30 @@
+# --- Configuration ---
+VENV := .venv
+PYTHON := python
+PIP := pip
+AIRFLOW := uv run airflow
+
+# We set AIRFLOW_HOME to the local 'airflow' folder in your repo.
+# This ensures Airflow automatically finds your 'dags' folder.
+export AIRFLOW_HOME := $(shell pwd)/airflow
+
+# This matches the DB_PATH from the python script (saved in root)
+DB_FILE := pokemon_movies.db
+
+# --- Targets ---
+.PHONY: help setup run query
+
+help: ## Show this help message
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+setup: ## Create venv and install Airflow + Scraping libs
+	uv sync
+
+run: ## Start Airflow Standalone (Webserver + Scheduler)
+	@echo "Starting Airflow... (Login details will appear below)"
+	@echo "Using AIRFLOW_HOME: $(AIRFLOW_HOME)"
+	$(AIRFLOW) standalone
+
+query: ## Run a SQLite query to verify the data
+	@echo "Checking top 10 most recently updated movies..."
+	@sqlite3 $(DB_FILE) ".mode column" ".headers on" "SELECT id, title, release_date, last_updated FROM pokemon_movies ORDER BY last_updated DESC LIMIT 10;"
