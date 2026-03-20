@@ -3,8 +3,8 @@ import pandas as pd
 import sqlite3
 import re
 from typing import List, Dict, Any
-from airflow.decorators import dag, task
-from airflow.models.baseoperator import Chain
+from airflow.sdk import dag, task
+# from airflow.models.baseoperator import Chain
 from pathlib import Path
 
 # --- Configuration ---
