@@ -91,4 +91,6 @@ warn_unused_configs = true
 disallow_untyped_defs = true
 
 [tool.uv]
+
+[tool.uv.pip]
 universal = true
