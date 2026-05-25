@@ -89,3 +89,6 @@ Repository = "https://github.com/matthewdeanmartin/airflow-pokemon"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
+
+[tool.uv]
+universal = true
